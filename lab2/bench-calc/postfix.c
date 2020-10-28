@@ -1,7 +1,5 @@
 #include "postfix.h"
 
-typedef struct double_stack double_stack;
-
 double evaluate(char operator, double operand1, double operand2)
 {
     double result = -99;

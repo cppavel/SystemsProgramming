@@ -21,4 +21,8 @@ void double_stack_push(struct double_stack * this, double value);
 // pop a value from the stack
 double double_stack_pop(struct double_stack * this);
 
+double double_stack_peek(struct double_stack * this);
+
+int double_stack_empty(struct double_stack* this);
+
 #endif

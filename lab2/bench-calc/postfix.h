@@ -11,4 +11,6 @@
 
 double evaluate_postfix_expression(char ** expr, int nterms);
 
+double evaluate(char operator, double operand1, double operand2);
+
 #endif

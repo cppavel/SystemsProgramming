@@ -34,3 +34,17 @@ double double_stack_pop(struct double_stack * this) {
 
 }
 
+double double_stack_peek(struct double_stack * this)
+{
+    if(this->top>0)
+    {
+        return this->items[this->top];
+    }
+    return -1;
+}
+
+int double_stack_empty(struct double_stack* this)
+{
+    return !(this->top > 0);
+}
+
