@@ -34,5 +34,10 @@ double evaluate_postfix_expression(char ** args, int nargs) {
 
     }
 
-    return double_stack_pop(stack);
+    double return_value = double_stack_pop(stack);
+
+    free(stack->items);
+    free(stack);
+
+    return return_value;
 }

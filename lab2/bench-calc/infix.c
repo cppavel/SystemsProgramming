@@ -57,7 +57,13 @@ double evaluate_infix_expression(char ** args, int nargs) {
         output[postfix_length++] = args[(int)double_stack_pop(stack_of_index)];
     }
     
-    return evaluate_postfix_expression(output,postfix_length);
+    double return_value = evaluate_postfix_expression(output,postfix_length);
+
+    free(output); 
+    free(stack_of_index->items);
+    free(stack_of_index);
+
+    return return_value;
 }
 
 
