@@ -9,7 +9,7 @@ int get_precedence(char* operator)
         case 'X': return 1;
         case '/': return 1;
         case '^': return 2;
-        default: return -1;
+        default: return -100;
     }
 }
 
@@ -21,7 +21,8 @@ double evaluate_infix_expression(char ** args, int nargs) {
     int postfix_length = 0;
     for(int i = 0; i < nargs; i++)
     {
-        if(args[i][0]>='0' && args[i][0] <= '9')
+        if((args[i][0]>='0' && args[i][0] <= '9') ||
+		 (args[i][0] =='-' && args[i][1]>='0' && args[i][1] <= '9'))
         {
             output[postfix_length++] = args[i];
         }
@@ -29,10 +30,12 @@ double evaluate_infix_expression(char ** args, int nargs) {
         {
             double_stack_push(stack_of_index,i);
         }
-        else if(args[i][0] == '+' || (args[i][0] == '-' && args[i][1] == '\0') || args[i][0] == 'X' || args[i][0] == '/' || args[i][0] == '^')
+        else if(args[i][0] == '+' || (args[i][0] == '-' && args[i][1] == '\0') ||
+ 		args[i][0] =='X'|| args[i][0] == '/' || args[i][0] == '^')
         {
-            while(double_stack_peek(stack_of_index)&&get_precedence(args[(int)double_stack_peek(stack_of_index)])>=
-                get_precedence(args[i]))
+            while(double_stack_peek(stack_of_index)>0&&
+		get_precedence(args[(int)double_stack_peek(stack_of_index)])>=
+			get_precedence(args[i]))
             {
                 output[postfix_length++] = args[(int)double_stack_pop(stack_of_index)];
             }
@@ -40,7 +43,8 @@ double evaluate_infix_expression(char ** args, int nargs) {
         }
         else if(args[i][0]==')')
         {
-            while(double_stack_peek(stack_of_index)&&args[(int)double_stack_peek(stack_of_index)][0]!=')')
+            while(double_stack_peek(stack_of_index)>0&&
+		args[(int)double_stack_peek(stack_of_index)][0]!='(')
             {
                 output[postfix_length++] = args[(int)double_stack_pop(stack_of_index)];
             }
@@ -52,7 +56,7 @@ double evaluate_infix_expression(char ** args, int nargs) {
     {
         output[postfix_length++] = args[(int)double_stack_pop(stack_of_index)];
     }
-
+    
     return evaluate_postfix_expression(output,postfix_length);
 }
 

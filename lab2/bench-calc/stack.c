@@ -38,7 +38,7 @@ double double_stack_peek(struct double_stack * this)
 {
     if(this->top>0)
     {
-        return this->items[this->top];
+        return this->items[this->top-1];
     }
     return -1;
 }
