@@ -27,23 +27,43 @@ int hash_string(char * string, int seed, int range)
 
 // create a new, empty Bloom filter of 'size' items
 struct bloom * bloom_new(int size) {
+    struct bloom* ans;
+    ans = malloc(sizeof(struct bloom));
+    ans->bitset = bitset_new(size);
+    ans->size = size;
+    return ans;
+
 }
 
 // check to see if a string is in the set
 int bloom_lookup(struct bloom * this, char * item) {
+    int hash1 = hash_string(item,BLOOM_HASH1,this->bitset->universe_size);
+    int hash2 = hash_string(item,BLOOM_HASH2,this->bitset->universe_size);
+
+    int result1  = bitset_lookup(this->bitset,hash1);
+    int result2 = bitset_lookup(this->bitset,hash2);
+
+    return result1 && result2;
 }
 
 // add a string to the set
 // has no effect if the item is already in the set
 void bloom_add(struct bloom * this, char * item) {
+    int hash1 = hash_string(item,BLOOM_HASH1,this->bitset->universe_size);
+    int hash2 = hash_string(item,BLOOM_HASH2,this->bitset->universe_size);
+
+    bitset_add(this->bitset,hash1);
+    bitset_add(this->bitset,hash2);
 }
 
 // place the union of src1 and src2 into dest
 void bloom_union(struct bloom * dest, struct bloom * src1,
     struct bloom * src2) {
+    bitset_union(dest->bitset,src1->bitset,src2->bitset);
 }
 
 // place the intersection of src1 and src2 into dest
 void bloom_intersect(struct bloom * dest, struct bloom * src1,
     struct bloom * src2) {
+    bitset_union(dest->bitset,src1->bitset,src2->bitset);
 }
