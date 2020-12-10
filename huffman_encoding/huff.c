@@ -123,8 +123,11 @@ void huffcoder_tree2table_helper(struct huffcoder* this, struct huffchar* curren
             index += NUM_CHARS;
         }
         this->code_lengths[index] = length;
-        this->codes[index] = malloc(sizeof(char)*NUM_CHARS);
-        strncpy(this->codes[index],path,length);
+        this->codes[index] = malloc(sizeof(char)*length);
+	for(int i = 0; i <= length; i++)
+	{
+	    this->codes[index][i] = path[i];
+	}
     }
     else
     {
@@ -140,6 +143,7 @@ void huffcoder_tree2table(struct huffcoder * this)
 {
     char* path = malloc(sizeof(char)*NUM_CHARS);
     huffcoder_tree2table_helper(this,this->tree,path,0);
+    free(path);
 }
 
 // print the Huffman codes for each character in order;
@@ -148,7 +152,7 @@ void huffcoder_print_codes(struct huffcoder * this)
 {
     for ( int i = 0; i < NUM_CHARS; i++ ) {
         // print the code
-        printf("char: %d, freq: %d, code: %s\n", i, this->freqs[i], this->codes[i]);;
+        printf("char: %d, freq: %d, code: %s\n", i, this->freqs[i], this->codes[i]);
     }
 }
 
