@@ -123,7 +123,7 @@ void huffcoder_tree2table_helper(struct huffcoder* this, struct huffchar* curren
             index += NUM_CHARS;
         }
         this->code_lengths[index] = length;
-        this->codes[index] = malloc(sizeof(char)*length);
+        this->codes[index] = malloc(sizeof(char)*(length+1));
 	for(int i = 0; i <= length; i++)
 	{
 	    this->codes[index][i] = path[i];
